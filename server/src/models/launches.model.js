@@ -18,9 +18,6 @@ const SPACEX_API_URL = "https://api.spacexdata.com/v4/launches/query";
 // };
 //launches.set(launch.flightNumber, launch);
 //saveLaunch(launch);
-async function findLaunch(filter) {
-  return await launchesDatabase.findOne(filter);
-}
 
 async function populateLaunches() {
   console.log("Downloading launch data...");
