@@ -83,6 +83,25 @@ async function loadLaunchData() {
   }
 }
 
+async function findLaunch(filter) {
+  return await launchesDatabase.findOne(filter);
+}
+
+async function existsLaunchWithId(launchId) {
+  return await findLaunch({
+    flightNumber: launchId,
+  });
+}
+
+//Function To Get Latest Flight Number From MongoDB - Used When Creating New Launch
+async function getLatestFlightNumber() {
+  const latestLaunch = await launchesDatabase.findOne().sort("-flightNumber"); //Return Object
+  if (!latestLaunch) {
+    return DEFAULT_FLIGHT_NUMBER;
+  }
+  return latestLaunch.flightNumber;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Function To Get All The Launches
 async function getAllLaunches(skip, limit) {
@@ -121,14 +140,6 @@ async function saveLaunch(launch) {
   );
 }
 
-//Function To Get Latest Flight Number From MongoDB - Used When Creating New Launch
-async function getLatestFlightNumber() {
-  const latestLaunch = await launchesDatabase.findOne().sort("-flightNumber"); //Return Object
-  if (!latestLaunch) {
-    return DEFAULT_FLIGHT_NUMBER;
-  }
-  return latestLaunch.flightNumber;
-}
 //Function To Create New Launch
 async function scheduleNewLaunch(launch) {
   const planet = await planets.findOne({
@@ -163,15 +174,7 @@ async function scheduleNewLaunch(launch) {
 //   );
 // }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-async function findLaunch(filter) {
-  return await launchesDatabase.findOne(filter);
-}
 
-async function existsLaunchWithId(launchId) {
-  return await findLaunch({
-    flightNumber: launchId,
-  });
-}
 // function existsLaunchWithId(launchId) {
 //   return launches.has(launchId);
 // }
