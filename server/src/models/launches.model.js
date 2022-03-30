@@ -70,6 +70,10 @@ async function populateLaunches() {
   }
 }
 
+async function findLaunch(filter) {
+  return await launchesDatabase.findOne(filter);
+}
+
 async function loadLaunchData() {
   const firstLaunch = await findLaunch({
     flightNumber: 1,
@@ -81,10 +85,6 @@ async function loadLaunchData() {
   } else {
     await populateLaunches();
   }
-}
-
-async function findLaunch(filter) {
-  return await launchesDatabase.findOne(filter);
 }
 
 async function existsLaunchWithId(launchId) {
